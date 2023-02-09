@@ -1,5 +1,12 @@
 {
   "dependencies": {
     "three": "^0.149.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.8.3"
+  },
+  "scripts": {
+    "parcel": "parcel",
+    "start": "npm run parcel -- index.html"
   }
 }
