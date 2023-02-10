@@ -1,85 +1,101 @@
-import * as THREE from 'three';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { WavesPass  } from './WavesPass';
+import * as THREE from "three";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { WavesPass } from "./WavesPass";
 
-var img = document.getElementById('texture');
+var img = document.getElementById("texture");
 
 var texture;
 var plane;
-var uMouseVelocity = new THREE.Vector2(0,0);
+var uMouseVelocity = new THREE.Vector2(0, 0);
 
 var camera;
 var renderer;
 var composer;
 var scene;
 
-var imageElement = document.createElement('img');
-imageElement.onload = function(e) {
-    texture = new THREE.Texture( this );
-    texture.needsUpdate = true;
-    init();
-    animate();
-    img.style.display = 'none';
+var imageElement = document.createElement("img");
+imageElement.onload = function (e) {
+  texture = new THREE.Texture(this);
+  texture.needsUpdate = true;
+  init();
+  animate();
+  img.style.display = "none";
 };
 
 imageElement.src = img.src;
 
 function init(w, h) {
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
+  renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
 
-    camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 0.1, 10 );
-    camera.position.z = 1;
+  camera = new THREE.OrthographicCamera(
+    window.innerWidth / -2,
+    window.innerWidth / 2,
+    window.innerHeight / 2,
+    window.innerHeight / -2,
+    0.1,
+    10
+  );
+  camera.position.z = 1;
 
-    scene = new THREE.Scene();
+  scene = new THREE.Scene();
 
-    const geometry = new THREE.PlaneGeometry( 1, 1 );
-    const material = new THREE.MeshBasicMaterial( {map: texture, side: THREE.DoubleSide} );
-    plane = new THREE.Mesh( geometry, material );
-    plane.scale.set(img.clientWidth, img.clientHeight, 1)
-    scene.add( plane );
+  const geometry = new THREE.PlaneGeometry(1, 1);
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    side: THREE.DoubleSide,
+  });
+  plane = new THREE.Mesh(geometry, material);
+  plane.scale.set(img.clientWidth, img.clientHeight, 1);
+  scene.add(plane);
 
-    composer = new EffectComposer(renderer);
-    const renderPass = new RenderPass(scene, camera);
-    const wavesPass = new WavesPass(window.innerWidth, window.innerHeight, uMouseVelocity)
-    composer.addPass(renderPass);
-    composer.addPass(wavesPass);
+  composer = new EffectComposer(renderer);
+  const renderPass = new RenderPass(scene, camera);
+  const wavesPass = new WavesPass(
+    window.innerWidth,
+    window.innerHeight,
+    uMouseVelocity
+  );
+  composer.addPass(renderPass);
+  composer.addPass(wavesPass);
 }
 
 function animate() {
-    requestAnimationFrame( animate );
-    composer.render();
-};
+  requestAnimationFrame(animate);
+  composer.render();
+}
 
-document.addEventListener('mousemove', (e) => {
-    const newVelocity = new THREE.Vector2(
-        THREE.MathUtils.clamp(e.movementX, -2, 2),
-        THREE.MathUtils.clamp(e.movementY, -10, 10)
-    )
-    uMouseVelocity.lerp(newVelocity, 0.1)
+document.addEventListener("mousemove", (e) => {
+  const newVelocity = new THREE.Vector2(
+    THREE.MathUtils.clamp(e.movementX, -2, 2),
+    THREE.MathUtils.clamp(e.movementY, -10, 10)
+  );
+  uMouseVelocity.lerp(newVelocity, 0.1);
 });
 
-window.addEventListener('resize', () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+window.addEventListener("resize", () => {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
 
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
 
-    const oldRendererSize = new THREE.Vector2(0, 0);
-    renderer.getSize(oldRendererSize);
+  const oldRendererSize = new THREE.Vector2(0, 0);
+  renderer.getSize(oldRendererSize);
 
-    const oldPlaneScale = plane.scale;
+  const oldPlaneScale = plane.scale;
 
-    const differenceInWidth = oldRendererSize.x - width;
-    const differenceInHeight = oldRendererSize.y - height;
+  const differenceInWidth = oldRendererSize.x - width;
+  const differenceInHeight = oldRendererSize.y - height;
 
-    plane.scale.set(oldPlaneScale.x - differenceInWidth, oldPlaneScale.y - differenceInHeight);
+  plane.scale.set(
+    oldPlaneScale.x - differenceInWidth,
+    oldPlaneScale.y - differenceInHeight
+  );
 
-    console.log(oldPlaneScale);
+  console.log(oldPlaneScale);
 
-    renderer.setSize( width, height );
+  renderer.setSize(width, height);
 });
-
