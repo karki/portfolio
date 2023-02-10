@@ -1,5 +1,5 @@
 html {
-    background: cornsilk;
+    background: black;
 }
 
 canvas {
@@ -8,4 +8,15 @@ canvas {
     left: 0;
     z-index: -1;
     pointer-events: none;
+}
+
+h1 {
+    font-family: 'Helvetica', sans-serif;
+    font-size: 2em;
+    color: yellow;
+    font-weight: 400;
+    font-style: italic;
+    position: absolute;
+    bottom: 64px;
+    right: 128px;
 }

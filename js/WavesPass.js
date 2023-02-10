@@ -7,7 +7,7 @@ export class WavesPass extends Pass {
 	material
     clock
 
-	constructor(width, height) {
+	constructor(width, height, uMouseVelocity) {
         super()
 
 		this.material = new WavesMaterial()
@@ -15,6 +15,7 @@ export class WavesPass extends Pass {
         this.clock = new THREE.Clock()
 
 		this.material.uniforms.uResolution.value = new THREE.Vector2(width, height)
+		this.material.uniforms.uMouseVelocity.value = uMouseVelocity
 	}
 
 	dispose() {
