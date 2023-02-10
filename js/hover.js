@@ -30,15 +30,15 @@ function init(w, h) {
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 10 );
+    var camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 0.1, 10 );
     camera.position.z = 1;
 
     scene = new THREE.Scene();
 
-    const geometry = new THREE.PlaneGeometry( 0.75, 0.75 );
+    const geometry = new THREE.PlaneGeometry( 1, 1 );
     const material = new THREE.MeshBasicMaterial( {map: texture, side: THREE.DoubleSide} );
     plane = new THREE.Mesh( geometry, material );
-    plane.scale.set(1.0, img.clientHeight / img.clientWidth, 1.0);
+    plane.geometry.scale(img.clientWidth, img.clientHeight, 1)
     scene.add( plane );
 
     composer = new EffectComposer(renderer);
@@ -60,3 +60,16 @@ document.addEventListener('mousemove', (e) => {
     )
     uMouseVelocity.lerp(newVelocity, 0.1)
 });
+
+window.addEventListener('resize', () => {
+    const width = window.innerWidth
+    const height = window.innerHeight
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+
+    renderer.getSize(size)
+    console.log(size);
+
+    renderer.setSize( width, height );
+});
+
