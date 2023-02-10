@@ -30,7 +30,7 @@ function init(w, h) {
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
-    var camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 0.1, 10 );
+    camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 0.1, 10 );
     camera.position.z = 1;
 
     scene = new THREE.Scene();
@@ -38,7 +38,7 @@ function init(w, h) {
     const geometry = new THREE.PlaneGeometry( 1, 1 );
     const material = new THREE.MeshBasicMaterial( {map: texture, side: THREE.DoubleSide} );
     plane = new THREE.Mesh( geometry, material );
-    plane.geometry.scale(img.clientWidth, img.clientHeight, 1)
+    plane.scale.set(img.clientWidth, img.clientHeight, 1)
     scene.add( plane );
 
     composer = new EffectComposer(renderer);
@@ -62,13 +62,23 @@ document.addEventListener('mousemove', (e) => {
 });
 
 window.addEventListener('resize', () => {
-    const width = window.innerWidth
-    const height = window.innerHeight
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
 
-    renderer.getSize(size)
-    console.log(size);
+    const oldRendererSize = new THREE.Vector2(0, 0);
+    renderer.getSize(oldRendererSize);
+
+    const oldPlaneScale = plane.scale;
+
+    const differenceInWidth = oldRendererSize.x - width;
+    const differenceInHeight = oldRendererSize.y - height;
+
+    plane.scale.set(oldPlaneScale.x - differenceInWidth, oldPlaneScale.y - differenceInHeight);
+
+    console.log(oldPlaneScale);
 
     renderer.setSize( width, height );
 });
