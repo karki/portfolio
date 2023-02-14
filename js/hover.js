@@ -14,6 +14,8 @@ var renderer;
 var composer;
 var scene;
 
+let wavesPass;
+
 var imageElement = document.createElement("img");
 imageElement.onload = function (e) {
   texture = new THREE.Texture(this);
@@ -53,7 +55,7 @@ function init(w, h) {
 
   composer = new EffectComposer(renderer);
   const renderPass = new RenderPass(scene, camera);
-  const wavesPass = new WavesPass(
+  wavesPass = new WavesPass(
     window.innerWidth,
     window.innerHeight,
     uMouseVelocity
@@ -79,23 +81,19 @@ window.addEventListener("resize", () => {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
+  camera.left = window.innerWidth / -2,
+  camera.right = window.innerWidth / 2,
+  camera.top = window.innerHeight / 2,
+  camera.bottom = window.innerHeight / -2,
+
   camera.aspect = width / height;
+
   camera.updateProjectionMatrix();
 
   const oldRendererSize = new THREE.Vector2(0, 0);
   renderer.getSize(oldRendererSize);
 
-  const oldPlaneScale = plane.scale;
-
-  const differenceInWidth = oldRendererSize.x - width;
-  const differenceInHeight = oldRendererSize.y - height;
-
-  plane.scale.set(
-    oldPlaneScale.x - differenceInWidth,
-    oldPlaneScale.y - differenceInHeight
-  );
-
-  console.log(oldPlaneScale);
+  wavesPass.material.uniforms["uResolution"].value = new THREE.Vector2(width, height);
 
   renderer.setSize(width, height);
 });
