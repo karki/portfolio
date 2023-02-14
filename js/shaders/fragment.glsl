@@ -1,3 +1,4 @@
+precision mediump float;
 uniform sampler2D tDiffuse;
 uniform vec2 uResolution;
 uniform vec2 uMouseVelocity;
@@ -14,5 +15,5 @@ void main() {
 
     vec2 uv = gl_FragCoord.xy / uResolution.xy + (cPos / cLength) * cos(cLength * 12.0 - time - uMouseVelocity.x * 4.0) * 0.03;
 
-    gl_FragColor = texture( tDiffuse, uv );
+    gl_FragColor = texture2D( tDiffuse, uv );
 }

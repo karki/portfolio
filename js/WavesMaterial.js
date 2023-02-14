@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import fragmentShader from "./fragment.glsl";
-import vertexShader from "./vertex.glsl";
+import fragmentShader from "./shaders/fragment.glsl";
+import vertexShader from "./shaders/vertex.glsl";
 
 export class WavesMaterial extends THREE.ShaderMaterial {
   constructor() {
