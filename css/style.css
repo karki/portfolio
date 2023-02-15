@@ -1,28 +1,40 @@
 html {
-    background: black;
+  background: black;
 }
 
 canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  pointer-events: none;
 }
 
 #texture {
-    max-height: 500px;
-    max-width: 500px;
-    opacity: 0;
+  max-height: 500px;
+  max-width: 500px;
+  opacity: 0;
+}
+
+.contact-info {
+  position: absolute;
+  bottom: 64px;
+  right: 128px;
 }
 
 h1 {
-    font-family: 'Helvetica', sans-serif;
-    font-size: 2em;
-    color: yellow;
-    font-weight: 400;
-    font-style: italic;
-    position: absolute;
-    bottom: 64px;
-    right: 128px;
+  font-family: "Helvetica", sans-serif;
+  font-size: 2em;
+  color: yellow;
+  font-weight: 400;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+p {
+  font-family: monospace;
+  font-style: italic;
+  font-weight: 400;
+  color: yellow;
+  margin: 0;
 }
