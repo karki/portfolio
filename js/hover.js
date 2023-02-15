@@ -3,6 +3,8 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { WavesPass } from "./WavesPass";
 
+const imageEdgePadding = 70;
+
 let currentVisibleImageIndex = 0;
 const loader = new THREE.TextureLoader();
 
@@ -41,6 +43,16 @@ function createImagePlane(width, height, texture) {
   });
   const plane = new THREE.Mesh(geometry, material);
   plane.scale.set(width, height, 1);
+
+  const windowXEdgeCoordinate = window.innerWidth / 2;
+  const windowYEdgeCoordinate = window.innerHeight / -2;
+
+  plane.position.set(
+    windowXEdgeCoordinate - (width / 2 + imageEdgePadding),
+    windowYEdgeCoordinate + (height / 2 + imageEdgePadding),
+    0
+  );
+
   plane.visible = false;
 
   return plane;
@@ -115,6 +127,17 @@ window.addEventListener("resize", () => {
     width,
     height
   );
+
+  const windowXEdgeCoordinate = width / 2;
+  const windowYEdgeCoordinate = height / -2;
+
+  imageMeshes.forEach((plane) => {
+    plane.position.set(
+      windowXEdgeCoordinate - (plane.scale.x / 2 + imageEdgePadding),
+      windowYEdgeCoordinate + (plane.scale.y / 2 + imageEdgePadding),
+      0
+    );
+  });
 
   renderer.setSize(width, height);
 });
