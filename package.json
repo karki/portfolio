@@ -8,6 +8,7 @@
   },
   "scripts": {
     "parcel": "parcel",
-    "start": "npm run parcel -- index.html"
+    "start": "npm run parcel -- index.html",
+    "build": "rm -rf .cache dist && parcel build ./index.html --public-url ./"
   }
 }
