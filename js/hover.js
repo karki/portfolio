@@ -54,7 +54,7 @@ let scene;
 let wavesPass;
 
 function init(w, h) {
-  renderer = new THREE.WebGLRenderer();
+  renderer = new THREE.WebGLRenderer({ alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
@@ -69,6 +69,7 @@ function init(w, h) {
   camera.position.z = 1;
 
   scene = new THREE.Scene();
+  scene.background = null;
 
   imageMeshes[currentVisibleImageIndex].visible = true;
 
