@@ -11,12 +11,24 @@ canvas {
 }
 
 #texture {
-  max-height: 500px;
-  max-width: 500px;
   opacity: 0;
   position: absolute;
   top: 0;
   left: 0;
+}
+
+@media (max-width: 499px) {
+  #texture {
+    max-height: 80%;
+    max-width: 80%;
+  }
+}
+
+@media (min-width: 500px) {
+  #texture {
+    max-height: 500px;
+    max-width: 500px;
+  }
 }
 
 .contact-info {
