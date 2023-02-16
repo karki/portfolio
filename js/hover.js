@@ -76,8 +76,10 @@ let scene;
 
 let wavesPass;
 
-var uMouseVelocity = new THREE.Vector2(0, 0);
-var uResolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
+let uMouseVelocity = new THREE.Vector2(0, 0);
+let newVelocity = new THREE.Vector2();
+
+let uResolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
 
 function init(w, h) {
   renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -111,17 +113,20 @@ function init(w, h) {
 function animate() {
   requestAnimationFrame(animate);
 
+  uMouseVelocity.lerp(newVelocity, 0.1);
+
   composer.render();
 }
 
 window.addEventListener("mousemove", (e) => {
-  const newVelocity = new THREE.Vector2(
+  newVelocity = new THREE.Vector2(
     THREE.MathUtils.clamp(e.movementX, -2, 2),
     THREE.MathUtils.clamp(e.movementY, -10, 10)
   );
-  uMouseVelocity.lerp(newVelocity, 0.1);
 
-  wavesPass.material.uniforms["uMouseVelocity"].value = uMouseVelocity;
+  if (wavesPass) {
+    wavesPass.material.uniforms["uMouseVelocity"].value = uMouseVelocity;
+  }
 });
 
 window.addEventListener("resize", () => {
