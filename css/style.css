@@ -1,5 +1,5 @@
 html {
-  background: cornflowerblue;
+  background: #afa99e;
 }
 
 canvas {
@@ -42,7 +42,7 @@ canvas {
 h1 {
   font-family: "Helvetica", sans-serif;
   font-size: 2em;
-  color: yellow;
+  color: #fffcf2;
   font-weight: 400;
   font-style: italic;
   margin-bottom: 8px;
@@ -52,10 +52,10 @@ p {
   font-family: monospace;
   font-style: italic;
   font-weight: 400;
-  color: yellow;
+  color: #fffcf2;
   margin: 0;
 }
 
 a {
-  color: yellow;
+  color: #fffcf2;
 }
