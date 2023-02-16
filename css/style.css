@@ -25,6 +25,20 @@ canvas {
   right: 128px;
 }
 
+@media (max-width: 799px) {
+  .contact-info {
+    right: 16px;
+    padding-left: 16px;
+  }
+}
+
+@media (min-width: 800px) {
+  .contact-info {
+    right: 128px;
+    padding-left: 0;
+  }
+}
+
 h1 {
   font-family: "Helvetica", sans-serif;
   font-size: 2em;

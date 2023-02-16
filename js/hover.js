@@ -66,7 +66,7 @@ function positionImagePlaneToTheLowerRightCorner(
   );
 }
 
-const imageEdgePadding = 70;
+let imageEdgePadding = window.innerWidth < 650 ? 20 : 70;
 let currentVisibleImageIndex = 0;
 
 let camera;
@@ -137,6 +137,8 @@ window.addEventListener("resize", () => {
 
   uResolution = new THREE.Vector2(width, height);
   wavesPass.material.uniforms["uResolution"].value = uResolution;
+
+  imageEdgePadding = width < 650 ? 20 : 70;
 
   imageMeshes.forEach((plane) => {
     positionImagePlaneToTheLowerRightCorner(
