@@ -3,13 +3,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { WavesPass } from "./WavesPass";
 
-const imageEdgePadding = 70;
-
-let currentVisibleImageIndex = 0;
 const loader = new THREE.TextureLoader();
-
-var uMouseVelocity = new THREE.Vector2(0, 0);
-
 const textures = document.getElementsByClassName("texture");
 const imageMeshes = [];
 
@@ -44,13 +38,11 @@ function createImagePlane(width, height, texture) {
   const plane = new THREE.Mesh(geometry, material);
   plane.scale.set(width, height, 1);
 
-  const windowXEdgeCoordinate = window.innerWidth / 2;
-  const windowYEdgeCoordinate = window.innerHeight / -2;
-
-  plane.position.set(
-    windowXEdgeCoordinate - (width / 2 + imageEdgePadding),
-    windowYEdgeCoordinate + (height / 2 + imageEdgePadding),
-    0
+  positionImagePlaneToTheLowerRightCorner(
+    plane,
+    window.innerWidth,
+    window.innerHeight,
+    imageEdgePadding
   );
 
   plane.visible = false;
@@ -58,12 +50,34 @@ function createImagePlane(width, height, texture) {
   return plane;
 }
 
+function positionImagePlaneToTheLowerRightCorner(
+  plane,
+  viewportWidth,
+  viewportHeight,
+  padding
+) {
+  const windowXEdgeCoordinate = viewportWidth / 2;
+  const windowYEdgeCoordinate = viewportHeight / -2;
+
+  plane.position.set(
+    windowXEdgeCoordinate - (plane.scale.x / 2 + padding),
+    windowYEdgeCoordinate + (plane.scale.y / 2 + padding),
+    0
+  );
+}
+
+const imageEdgePadding = 70;
+let currentVisibleImageIndex = 0;
+
 let camera;
 let renderer;
 let composer;
 let scene;
 
 let wavesPass;
+
+var uMouseVelocity = new THREE.Vector2(0, 0);
+var uResolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
 
 function init(w, h) {
   renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -89,11 +103,7 @@ function init(w, h) {
 
   composer = new EffectComposer(renderer);
   const renderPass = new RenderPass(scene, camera);
-  wavesPass = new WavesPass(
-    window.innerWidth,
-    window.innerHeight,
-    uMouseVelocity
-  );
+  wavesPass = new WavesPass(uResolution, uMouseVelocity);
   composer.addPass(renderPass);
   composer.addPass(wavesPass);
 }
@@ -104,12 +114,14 @@ function animate() {
   composer.render();
 }
 
-document.addEventListener("mousemove", (e) => {
+window.addEventListener("mousemove", (e) => {
   const newVelocity = new THREE.Vector2(
     THREE.MathUtils.clamp(e.movementX, -2, 2),
     THREE.MathUtils.clamp(e.movementY, -10, 10)
   );
   uMouseVelocity.lerp(newVelocity, 0.1);
+
+  wavesPass.material.uniforms["uMouseVelocity"].value = uMouseVelocity;
 });
 
 window.addEventListener("resize", () => {
@@ -123,19 +135,15 @@ window.addEventListener("resize", () => {
     (camera.aspect = width / height);
   camera.updateProjectionMatrix();
 
-  wavesPass.material.uniforms["uResolution"].value = new THREE.Vector2(
-    width,
-    height
-  );
-
-  const windowXEdgeCoordinate = width / 2;
-  const windowYEdgeCoordinate = height / -2;
+  uResolution = new THREE.Vector2(width, height);
+  wavesPass.material.uniforms["uResolution"].value = uResolution;
 
   imageMeshes.forEach((plane) => {
-    plane.position.set(
-      windowXEdgeCoordinate - (plane.scale.x / 2 + imageEdgePadding),
-      windowYEdgeCoordinate + (plane.scale.y / 2 + imageEdgePadding),
-      0
+    positionImagePlaneToTheLowerRightCorner(
+      plane,
+      width,
+      height,
+      imageEdgePadding
     );
   });
 

@@ -7,14 +7,14 @@ export class WavesPass extends Pass {
   material;
   clock;
 
-  constructor(width, height, uMouseVelocity) {
+  constructor(uResolution, uMouseVelocity) {
     super();
 
     this.material = new WavesMaterial();
     this.fsQuad = new FullScreenQuad(this.material);
     this.clock = new THREE.Clock();
 
-    this.material.uniforms.uResolution.value = new THREE.Vector2(width, height);
+    this.material.uniforms.uResolution.value = uResolution;
     this.material.uniforms.uMouseVelocity.value = uMouseVelocity;
   }
 
