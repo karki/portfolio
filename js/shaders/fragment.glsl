@@ -13,7 +13,7 @@ void main() {
     vec2 cPos = -1.0 + 2.0 * gl_FragCoord.xy / uResolution.xy;
     float cLength = length(cPos);
 
-    newUv = gl_FragCoord.xy / uResolution.xy + (cPos / cLength) * cos(cLength * 12.0 - time - uMouseVelocity.x * 4.0) * 0.03;
+    newUv = gl_FragCoord.xy / uResolution.xy + (cPos / cLength) * cos(cLength * 12.0 - (time * 0.3) - uMouseVelocity.x * 4.0) * 0.03;
 
     gl_FragColor = texture2D( tDiffuse, newUv );
 }

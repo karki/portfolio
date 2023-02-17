@@ -113,7 +113,9 @@ function init(w, h) {
 function animate() {
   requestAnimationFrame(animate);
 
-  uMouseVelocity.lerp(newVelocity, 0.1);
+  uMouseVelocity.lerp(new THREE.Vector2(0, 0), 0.1);
+
+  wavesPass.material.uniforms["uMouseVelocity"].value = uMouseVelocity;
 
   composer.render();
 }
@@ -121,12 +123,10 @@ function animate() {
 window.addEventListener("mousemove", (e) => {
   newVelocity = new THREE.Vector2(
     THREE.MathUtils.clamp(e.movementX, -2, 2),
-    THREE.MathUtils.clamp(e.movementY, -10, 10)
+    THREE.MathUtils.clamp(e.movementY, -2, 2)
   );
 
-  if (wavesPass) {
-    wavesPass.material.uniforms["uMouseVelocity"].value = uMouseVelocity;
-  }
+  uMouseVelocity.lerp(newVelocity, 0.1);
 });
 
 window.addEventListener("resize", () => {
