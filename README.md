@@ -5,6 +5,8 @@ with a cool webGL ripple effect :--).
 
 Accessible at [https://karki.github.io/portfolio](https://karki.github.io/portfolio)
 
+Repo is viewable at [https://github.com/karki/portfolio](https://github.com/karki/portfolio)
+
 ## Requirements
 
 - NodeJS
